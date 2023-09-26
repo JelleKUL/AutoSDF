@@ -208,6 +208,7 @@ def create_one_sdf(sdfcommand, sdf_res, expand_rate, sdf_file, obj_file, indx, g
     command_str2 = "mv " + str(indx)+".dist " + sdf_file
     print("[*] command:", command_str2)
     os.system(command_str2)
+    print("Command executed")
 
 def create_sdf_obj(sdfcommand, marching_cube_command, norm_mesh_dir, sdf_dir, obj,
        sdf_res, iso_val, expand_rate, indx, ish5, normalize, num_sample, bandwidth, max_verts, g, reduce, h5_file=None):
@@ -234,6 +235,8 @@ def create_sdf_obj(sdfcommand, marching_cube_command, norm_mesh_dir, sdf_dir, ob
         norm_obj_file, centroid, m = get_normalize_mesh(model_file, norm_mesh_sub_dir)
 
     create_one_sdf(sdfcommand, sdf_res, expand_rate, sdf_file, norm_obj_file, indx, g=g)
+    print(os.path.exists(sdf_file))
+    print("Created one sdf")
     # save to h5
     create_h5_sdf_pt(h5_file, sdf_file, norm_obj_file,
             centroid, m, sdf_res, num_sample, bandwidth, iso_val, max_verts, normalize, reduce=reduce)
@@ -348,7 +351,6 @@ def process_obj(obj_file):
     reduce = 4
 
     os.environ['LD_LIBRARY_PATH'] = '$LD_LIBRARY_PATH:./preprocess/isosurface/:./preprocess/isosurface/tbb/tbb2018_20180822oss/lib/intel64/gcc4.7:/opt/intel/lib/intel64:/opt/intel/mkl/lib/intel64:/usr/local/lib64:/usr/local/lib:/usr/local/cuda/lib64'
-
     tmp_dir = f'tmp/for_sdf'
     model_dir = f'{tmp_dir}/model'
     norm_mesh_dir = f'{tmp_dir}/norm_mesh'
