@@ -4,7 +4,7 @@ CUR_PATH = os.path.dirname(os.path.realpath(__file__))
 
 import socket
 
-hostname = socket.gethostname()
+hostname = "euclid" #socket.gethostname()
 
 json_f_dict = {
     'yenchi-pc': {

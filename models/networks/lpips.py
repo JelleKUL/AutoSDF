@@ -5,8 +5,11 @@ import torch.nn as nn
 from torchvision import models
 from collections import namedtuple
 
-from utils.lpips_util import get_ckpt_path
+#from utils.lpips_util import get_ckpt_path
 from configs.paths import dataroot
+
+def get_ckpt_path(name, extra):
+    return name
 
 class LPIPS(nn.Module):
     # Learned perceptual metric
