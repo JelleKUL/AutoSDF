@@ -205,6 +205,7 @@ def create_one_sdf(sdfcommand, sdf_res, expand_rate, sdf_file, obj_file, indx, g
         command_str += " -g " + str(g)
     print("[*] command:", command_str)
     os.system(command_str)
+    print(os.path.isfile(str(indx)+".dist"))
     command_str2 = "mv " + str(indx)+".dist " + sdf_file
     print("[*] command:", command_str2)
     os.system(command_str2)

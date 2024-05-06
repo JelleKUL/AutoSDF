@@ -29,13 +29,15 @@ def make_batch(data, B=16):
     data['z_q'] = z_q.repeat(B//bs, 1, 1, 1, 1)
     return data
 
-def get_partial_shape_by_range(sdf, input_range, thres=0.2):
+def get_partial_shape_by_range(sdf, input_range, thres=0.2, invert = False):
+    # clamp the sdf field distances to the threshold values
     sdf = torch.clamp(sdf, min=-thres, max=thres)
     
     min_x, max_x = input_range['x1'], input_range['x2']
     min_y, max_y = input_range['y1'], input_range['y2']
     min_z, max_z = input_range['z1'], input_range['z2']
     
+    # Create a discrete 8x8x8 grid of voxel subcubes
     bins_x = np.linspace(-1, 1, num=9)
     bins_y = np.linspace(-1, 1, num=9)
     bins_z = np.linspace(-1, 1, num=9)
@@ -62,8 +64,12 @@ def get_partial_shape_by_range(sdf, input_range, thres=0.2):
     # clone sdf
     x = sdf.clone()
     x_missing = sdf.clone()
+    # define which subcubes need to be generated
     gen_order = torch.arange(512).cuda()
     gen_order = gen_order.view(8, 8, 8)
+    # define an inverse
+    gen_order_inv = torch.arange(512).cuda()
+    gen_order_inv = gen_order_inv.view(8, 8, 8)
 
     x[:, :, :x1, :, :] = 0.2
     gen_order[:cube_x1, :, :] = -1
@@ -82,10 +88,16 @@ def get_partial_shape_by_range(sdf, input_range, thres=0.2):
 
     x_missing[:, :, x1:x2, y1:y2, z1:z2] = 0.2
 
+    # filter the to-be-generated sub cubes
+    gen_order_inv = gen_order_inv[gen_order == -1]
+    gen_order_inv = gen_order_inv.view(-1)
     gen_order = gen_order[gen_order != -1]
     gen_order = gen_order.view(-1)
 
+    if(invert):
+        return {'sdf' : x_missing, 'sdf_missing': x, 'gen_order': gen_order_inv}
     return {'sdf' : x, 'sdf_missing': x_missing, 'gen_order': gen_order}
+
 
 
 def get_shape_comp_input_mesh(sdf_partial, sdf_missing):
