@@ -29,6 +29,42 @@ def make_batch(data, B=16):
     data['z_q'] = z_q.repeat(B//bs, 1, 1, 1, 1)
     return data
 
+def get_partial_shape_by_voxels(sdf, voxelArray, thres=0.2, invert = False):
+    # clamp the sdf field distances to the threshold values
+    sdf = torch.clamp(sdf, min=-thres, max=thres)
+    
+    # clone sdf
+    x = sdf.clone()
+    x_missing = sdf.clone()
+
+    # Create an indexed [8,8,8] array
+    gen_order = torch.arange(512).cuda()
+    gen_order = gen_order.view(8, 8, 8)
+
+    # Create an [8,8,8] voxel grid where the occupied voxels are 1
+    voxel_grid = torch.zeros([8,8,8])
+    for voxel in voxelArray:
+        voxel_grid[voxel[0], voxel[1], voxel[2]] = 1
+
+    # Filter the index array by the occupied voxels
+    gen_order_inverse = gen_order[voxel_grid == 1]
+    gen_order_inverse = gen_order_inverse.view(-1) # flatten
+    gen_order = gen_order[voxel_grid == 0]
+    gen_order = gen_order.view(-1)
+
+    # Upscale the voxel array to 64x64x64 using nearest-neighbor interpolation
+    voxels_upscaled = F.interpolate(voxel_grid.view(1,1,8,8,8), size=(64, 64, 64), mode='nearest')
+    voxels_upscaled = voxels_upscaled.squeeze()
+    voxels_upscaled = voxels_upscaled.view(1,1,64, 64, 64) # Match the SDF input shape
+
+    # Set all the occupied voxels in the SDF to the treshold value
+    x[voxels_upscaled == 1] = 0.2
+    x_missing[voxels_upscaled == 0] = 0.2
+
+    if(invert):
+        return {'sdf' : x_missing, 'sdf_missing': x, 'gen_order': gen_order_inverse}
+    return {'sdf' : x, 'sdf_missing': x_missing, 'gen_order': gen_order}
+
 def get_partial_shape_by_range(sdf, input_range, thres=0.2, invert = False):
     # clamp the sdf field distances to the threshold values
     sdf = torch.clamp(sdf, min=-thres, max=thres)
@@ -44,7 +80,7 @@ def get_partial_shape_by_range(sdf, input_range, thres=0.2, invert = False):
 
 
     # -1: 1, 1: 9
-    # find cube idx
+    # remap the -1: 1 range to discrete cube indices
     x_inds = np.digitize([min_x, max_x], bins_x)
     y_inds = np.digitize([min_y, max_y], bins_y)
     z_inds = np.digitize([min_z, max_z], bins_z)
