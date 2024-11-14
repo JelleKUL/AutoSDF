@@ -1,4 +1,5 @@
 import cv2
+import os
 import numpy as np
 import imageio
 from PIL import Image
@@ -12,6 +13,7 @@ import torchvision.utils as vutils
 import torchvision.transforms as transforms
 
 from pytorch3d import structures
+import pytorch3d.io
 
 from .util_3d import sdf_to_mesh, render_mesh, rotate_mesh_360
 
@@ -29,7 +31,7 @@ def make_batch(data, B=16):
     data['z_q'] = z_q.repeat(B//bs, 1, 1, 1, 1)
     return data
 
-def get_partial_shape_by_voxels(sdf, voxelArray, thres=0.2, invert = False):
+def get_partial_shape_by_voxels(sdf, voxelArray, thres=0.2, invert = False, device = "cuda"):
     # clamp the sdf field distances to the threshold values
     sdf = torch.clamp(sdf, min=-thres, max=thres)
     
@@ -38,7 +40,7 @@ def get_partial_shape_by_voxels(sdf, voxelArray, thres=0.2, invert = False):
     x_missing = sdf.clone()
 
     # Create an indexed [8,8,8] array
-    gen_order = torch.arange(512).cuda()
+    gen_order = torch.arange(512).cuda(device=device)
     gen_order = gen_order.view(8, 8, 8)
 
     # Create an [8,8,8] voxel grid where the occupied voxels are 1
@@ -156,13 +158,13 @@ def get_shape_comp_input_mesh(sdf_partial, sdf_missing):
     
     return mesh_comb
 
-def save_mesh_as_gif(mesh_renderer, mesh, nrow=3, out_name='1.gif'):
+def save_mesh_as_gif(mesh_renderer, mesh, nrow=3, out_name='1.gif', device = "cuda"):
     """ save batch of mesh into gif """
 
     # img_comb = render_mesh(mesh_renderer, mesh, norm=False)    
 
     # rotate
-    rot_comb = rotate_mesh_360(mesh_renderer, mesh) # save the first one
+    rot_comb = rotate_mesh_360(mesh_renderer, mesh, device = device) # save the first one
     
     # gather img into batches
     nimgs = len(rot_comb)
@@ -185,6 +187,14 @@ def save_mesh_as_gif(mesh_renderer, mesh, nrow=3, out_name='1.gif'):
         # combine them according to nrow
         for rot in rot_comb_img:
             writer.append_data(rot)
+
+def save_meshes_to_file(gen_mesh, res_dir):
+    i=0
+    for mesh in gen_mesh:
+        final_verts, final_faces = mesh.get_mesh_verts_faces(0)
+        pytorch3d.io.save_obj(res_dir + os.sep + str(i) + ".obj", final_verts, final_faces)
+        i+=1
+
 
 ##################### util function for single-view recon #####################
 

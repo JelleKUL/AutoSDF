@@ -1,8 +1,8 @@
 import torch.utils.data
 
-from datasets.base_dataset import CreateDataset
-from datasets.base_dataloader import BaseDataLoader
-from configs.paths import dataroot
+from AutoSDF.datasets.base_dataset import CreateDataset
+from AutoSDF.datasets.base_dataloader import BaseDataLoader
+from AutoSDF.configs.paths import dataroot
 
 class CustomDatasetDataLoader(BaseDataLoader):
     def name(self):

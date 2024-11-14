@@ -319,14 +319,14 @@ def rotate_mesh(mesh, axis='Y', angle=10, device='cuda'):
     new_mesh = Meshes(verts=rot_verts, faces=faces, textures=textures)
     return new_mesh
 
-def rotate_mesh_360(mesh_renderer, mesh):
+def rotate_mesh_360(mesh_renderer, mesh, device='cuda'):
     cur_mesh = mesh
 
     B = len(mesh.verts_list())
     ret = [ [] for i in range(B)]
 
     for i in range(36):
-        cur_mesh = rotate_mesh(cur_mesh)
+        cur_mesh = rotate_mesh(cur_mesh, device=device)
         img = render_mesh(mesh_renderer, cur_mesh, norm=False) # b c h w # important!! no norm here or they will not align
         img = img.permute(0, 2, 3, 1) # b h w c
         img = img.detach().cpu().numpy()

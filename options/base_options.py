@@ -7,7 +7,7 @@ from omegaconf import OmegaConf
 import torch
 from torch.utils.tensorboard import SummaryWriter
 
-import utils
+import AutoSDF.utils
 
 class BaseOptions():
     def __init__(self):
@@ -161,7 +161,7 @@ class BaseOptions():
         if self.opt.isTrain:
             expr_dir = os.path.join(self.opt.logs_dir, self.opt.name)
 
-            utils.util.mkdirs(expr_dir)
+            AutoSDF.utils.util.mkdirs(expr_dir)
             file_name = os.path.join(expr_dir, 'opt.txt')
             with open(file_name, 'wt') as opt_file:
                 opt_file.write('------------ Options -------------\n')

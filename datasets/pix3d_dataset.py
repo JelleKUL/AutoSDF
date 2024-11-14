@@ -20,11 +20,11 @@ import torchvision.transforms as transforms
 import torchvision.transforms.functional as TF
 from torchvision.transforms.functional import InterpolationMode
 
-from datasets.base_dataset import BaseDataset
+from AutoSDF.datasets.base_dataset import BaseDataset
 
-from configs.paths import dataroot
-from preprocess.create_sdf_file_lst import json_f_dict
-from utils.pix3d_util import downsample_voxel
+from AutoSDF.configs.paths import dataroot
+from AutoSDF.preprocess.create_sdf_file_lst import json_f_dict
+from AutoSDF.utils.pix3d_util import downsample_voxel
 
 hostname = socket.gethostname()
 

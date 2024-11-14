@@ -4,9 +4,9 @@ import torch.nn as nn
 
 from einops import rearrange
 
-from models.networks.resnet import model_urls, resnet18, resnet50
-from models.networks.pvqvae_networks.modules import ResnetBlock as PVQVAEResnetBlock
-from models.networks.pvqvae_networks.modules import Upsample, AttnBlock, Normalize, nonlinearity
+from AutoSDF.models.networks.resnet import model_urls, resnet18, resnet50
+from AutoSDF.models.networks.pvqvae_networks.modules import ResnetBlock as PVQVAEResnetBlock
+from AutoSDF.models.networks.pvqvae_networks.modules import Upsample, AttnBlock, Normalize, nonlinearity
 
 
 class ResNet2VQ(nn.Module):

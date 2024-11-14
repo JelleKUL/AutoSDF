@@ -12,8 +12,8 @@ from torch.nn import functional as F
 
 from einops import rearrange
 
-from models.networks.pvqvae_networks.modules import Encoder3D, Decoder3D
-from models.networks.pvqvae_networks.quantizer import VectorQuantizer
+from AutoSDF.models.networks.pvqvae_networks.modules import Encoder3D, Decoder3D
+from AutoSDF.models.networks.pvqvae_networks.quantizer import VectorQuantizer
 
 def init_weights(net, init_type='normal', gain=0.01):
     def init_func(m):

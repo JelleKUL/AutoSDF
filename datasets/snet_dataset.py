@@ -16,12 +16,12 @@ import torchvision.transforms as transforms
 import torchvision.transforms.functional as TF
 from torchvision.transforms.functional import InterpolationMode
 
-from datasets.base_dataset import BaseDataset
+from AutoSDF.datasets.base_dataset import BaseDataset
 
-from utils.util_3d import read_sdf
-from utils import binvox_rw
+from AutoSDF.utils.util_3d import read_sdf
+from AutoSDF.utils import binvox_rw
 
-from configs.paths import dataroot
+from AutoSDF.configs.paths import dataroot
 
 
 def get_code_setting(opt):

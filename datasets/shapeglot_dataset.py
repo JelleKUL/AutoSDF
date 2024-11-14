@@ -14,8 +14,8 @@ from termcolor import cprint
 
 import torch
 
-from configs.paths import dataroot
-from datasets.base_dataset import BaseDataset
+from AutoSDF.configs.paths import dataroot
+from AutoSDF.datasets.base_dataset import BaseDataset
 
 
 

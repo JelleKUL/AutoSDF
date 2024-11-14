@@ -1,7 +1,7 @@
 import os
 from termcolor import colored, cprint
 import torch
-import utils.util as util
+import AutoSDF.utils.util as util
 
 
 
@@ -10,33 +10,33 @@ def create_model(opt):
 
     if opt.model == 'pvqvae':
         # vqvae
-        from models.pvqvae_model import PVQVAEModel
+        from AutoSDF.models.pvqvae_model import PVQVAEModel
         model = PVQVAEModel()
     elif opt.model == 'rand_tf':
         # transformer
-        from models.rand_tf_model import RandTransformerModel
+        from AutoSDF.models.rand_tf_model import RandTransformerModel
         model = RandTransformerModel()
     elif opt.model == 'seq_tf':
         # seq-transformer
-        from models.seq_tf_model import SeqTransformerModel
+        from AutoSDF.models.seq_tf_model import SeqTransformerModel
         model = SeqTransformerModel()
     elif opt.model == 'bert2vq':
-        from models.bert2vq_model import BERT2VQModel
+        from AutoSDF.models.bert2vq_model import BERT2VQModel
         model = BERT2VQModel()
     elif opt.model == 'resnet2vq':
-        from models.resnet2vq_model import ResNet2VQModel
+        from AutoSDF.models.resnet2vq_model import ResNet2VQModel
         model = ResNet2VQModel()
     elif opt.model == 'resnet2vox':
-        from models.resnet2vox_model import ResNet2VoxModel
+        from AutoSDF.models.resnet2vox_model import ResNet2VoxModel
         model = ResNet2VoxModel()
     elif opt.model == 'resnet2sdf':
-        from models.resnet2sdf_model import ResNet2SDFModel
+        from AutoSDF.models.resnet2sdf_model import ResNet2SDFModel
         model = ResNet2SDFModel()
     elif opt.model == 'baseline_je':
-        from models.baseline_je_model import LangJEModel
+        from AutoSDF.models.baseline_je_model import LangJEModel
         model = LangJEModel()
     elif opt.model == 'img_je':
-        from models.img_je_model import ImgJEModel
+        from AutoSDF.models.img_je_model import ImgJEModel
         model = ImgJEModel()
     else:
         raise ValueError("Model [%s] not recognized." % opt.model)

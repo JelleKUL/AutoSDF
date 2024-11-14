@@ -16,12 +16,12 @@ from torch import nn, optim
 import torchvision.utils as vutils
 import torchvision.transforms as transforms
 
-from models.base_model import BaseModel
-from models.networks.resnet2vq_net import ResNet2VQ
-from models.networks.pvqvae_networks.auto_encoder import PVQVAE
+from AutoSDF.models.base_model import BaseModel
+from AutoSDF.models.networks.resnet2vq_net import ResNet2VQ
+from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
 
-import utils
-from utils.util_3d import init_mesh_renderer, render_mesh, render_sdf
+import AutoSDF.utils
+from AutoSDF.utils.util_3d import init_mesh_renderer, render_mesh, render_sdf
 
 class ResNet2VQModel(BaseModel):
     def name(self):

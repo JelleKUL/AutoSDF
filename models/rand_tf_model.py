@@ -16,12 +16,12 @@ from torch import nn, optim
 import torchvision.utils as vutils
 import torchvision.transforms as transforms
 
-from models.base_model import BaseModel
-from models.networks.transformer_networks.rand_transformer import RandTransformer
-from models.networks.pvqvae_networks.auto_encoder import PVQVAE
+from AutoSDF.models.base_model import BaseModel
+from AutoSDF.models.networks.transformer_networks.rand_transformer import RandTransformer
+from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
 
-import utils.util
-from utils.util_3d import init_mesh_renderer, render_sdf
+import AutoSDF.utils.util as util
+from AutoSDF.utils.util_3d import init_mesh_renderer, render_sdf
 
 class RandTransformerModel(BaseModel):
     def name(self):
@@ -300,8 +300,8 @@ class RandTransformerModel(BaseModel):
         return gen_tf
 
     def shape_comp(self, input, bs=6, topk=30):
-        from models.pvqvae_model import PVQVAEModel
-        from utils.qual_util import make_batch, get_shape_comp_input_mesh
+        from AutoSDF.models.pvqvae_model import PVQVAEModel
+        from AutoSDF.utils.qual_util import make_batch, get_shape_comp_input_mesh
 
         # first obtain tokens from input
         sdf_partial, sdf_missing, gen_order = input['sdf'], input['sdf_missing'], input['gen_order']

@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 
 from torchvision import datasets
 
-from configs.paths import dataroot
+from AutoSDF.configs.paths import dataroot
 
 class BaseDataset(data.Dataset):
     def __init__(self):

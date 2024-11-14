@@ -6,7 +6,7 @@ from torchvision import models
 from collections import namedtuple
 
 #from utils.lpips_util import get_ckpt_path
-from configs.paths import dataroot
+from AutoSDF.configs.paths import dataroot
 
 def get_ckpt_path(name, extra):
     return name

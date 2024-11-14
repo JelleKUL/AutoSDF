@@ -23,11 +23,11 @@ import torchvision.transforms as transforms
 
 from torch.hub import load_state_dict_from_url
 
-from models.base_model import BaseModel
-from models.networks.bert2vq_net import BERT2VQ
-from models.networks.pvqvae_networks.auto_encoder import PVQVAE
-import utils
-from utils.util import NoamLR
+from AutoSDF.models.base_model import BaseModel
+from AutoSDF.models.networks.bert2vq_net import BERT2VQ
+from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
+import AutoSDF.utils
+from AutoSDF.utils.util import NoamLR
 # from utils.util_3d import init_mesh_renderer, render_mesh, init_snet_to_pix3dvox_params, render_sdf, snet_to_pix3dvox
 
 class BERT2VQModel(BaseModel):

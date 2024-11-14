@@ -16,12 +16,12 @@ from torch.profiler import record_function
 import torchvision.utils as vutils
 import torchvision.transforms as transforms
 
-from models.base_model import BaseModel
-from models.networks.pvqvae_networks.auto_encoder import PVQVAE
-from models.networks.losses import VQLoss
+from AutoSDF.models.base_model import BaseModel
+from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
+from AutoSDF.models.networks.losses import VQLoss
 
-import utils.util
-from utils.util_3d import init_mesh_renderer, render_sdf
+import AutoSDF.utils.util
+from AutoSDF.utils.util_3d import init_mesh_renderer, render_sdf
 
 class PVQVAEModel(BaseModel):
     def name(self):

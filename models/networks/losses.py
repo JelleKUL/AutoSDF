@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from models.networks.lpips import LPIPS
+from AutoSDF.models.networks.lpips import LPIPS
 
 class VQLoss(nn.Module):
     def __init__(self, disc_start, codebook_weight=1.0, pixelloss_weight=1.0,

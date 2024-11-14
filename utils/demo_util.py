@@ -3,16 +3,16 @@ import numpy as np
 from einops import rearrange
 from omegaconf import OmegaConf
 from PIL import Image
-
+import os
 import torch
 
-from datasets.base_dataset import CreateDataset
-from datasets.dataloader import CreateDataLoader, get_data_generator
+from AutoSDF.datasets.base_dataset import CreateDataset
+from AutoSDF.datasets.dataloader import CreateDataLoader, get_data_generator
 
-from models.base_model import create_model
+from AutoSDF.models.base_model import create_model
 
-import utils
-from utils.qual_util import make_batch
+import AutoSDF.utils as utils
+from AutoSDF.utils.qual_util import make_batch
 
 class Opt:
     def __init__(self):
@@ -98,17 +98,17 @@ def get_shape_comp_dset(opt):
     return test_dl, test_dg
     
     
-def get_shape_comp_model(opt):
+def get_shape_comp_model(opt, root = "."):
     
     # load tf stuff
     opt.model='rand_tf'
-    opt.tf_cfg='configs/rand_tf_snet_code.yaml'
-    opt.ckpt = 'saved_ckpt/rand_tf-snet_code-all-LR1e-4-clean-epoch200.pth'
+    opt.tf_cfg=os.path.join(root,'configs/rand_tf_snet_code.yaml')
+    opt.ckpt = os.path.join(root,'saved_ckpt/rand_tf-snet_code-all-LR1e-4-clean-epoch200.pth')
     
     # load vq stuff
     opt.vq_model='pvqvae'
-    opt.vq_cfg='configs/pvqvae_snet.yaml'
-    opt.vq_ckpt='saved_ckpt/pvqvae-snet-all-LR1e-4-T0.2-rerun-epoch140.pth'
+    opt.vq_cfg=os.path.join(root,'configs/pvqvae_snet.yaml')
+    opt.vq_ckpt=os.path.join(root,'saved_ckpt/pvqvae-snet-all-LR1e-4-T0.2-rerun-epoch140.pth')
     
     ### opt.vq_dset='sdf_code' # original
     opt.vq_dset='snet'
