@@ -151,10 +151,14 @@ def get_shape_comp_input_mesh(sdf_partial, sdf_missing):
     mesh_res = sdf_to_mesh(x_res, color=[1, .6, .6])
     
     if mesh_part is None or mesh_res is None:
-        import pdb; pdb.set_trace()
+        return None
+    #    import pdb; pdb.set_trace()
     
     # combine
-    mesh_comb = structures.join_meshes_as_scene([mesh_part, mesh_res])
+    try:
+        mesh_comb = structures.join_meshes_as_scene([mesh_part, mesh_res])
+    except:
+        mesh_comb = mesh_part
     
     return mesh_comb
 

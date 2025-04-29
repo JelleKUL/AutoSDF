@@ -10,6 +10,7 @@ from einops import rearrange
 from tqdm import tqdm
 
 import torch
+torch.backends.cudnn.enabled = False
 from torch import nn, optim
 from torch.profiler import record_function
 
@@ -112,7 +113,8 @@ class PVQVAEModel(BaseModel):
         '''Samples at training time'''
         # import pdb; pdb.set_trace()
         x = input['sdf']
-        self.x = x
+        print("input SDF device: ", x.device)
+        self.x = x#.to(self.opt.device)
         self.cur_bs = x.shape[0] # to handle last batch
 
         self.x_cubes = self.unfold_to_cubes(x, self.cube_size, self.stride)
@@ -124,6 +126,8 @@ class PVQVAEModel(BaseModel):
         # qloss: codebook loss
         self.zq_cubes, self.qloss, _ = self.vqvae.encode(self.x_cubes) # zq_cubes: ncubes X zdim X 1 X 1 X 1
         self.zq_voxels = self.fold_to_voxels(self.zq_cubes, batch_size=self.cur_bs, ncubes_per_dim=self.ncubes_per_dim) # zq_voxels: bs X zdim X ncubes_per_dim X ncubes_per_dim X ncubes_per_dim
+        print("zq_voxels device: ",self.zq_voxels.device)
+        #print(next(self.decoder.parameters()).device)
         self.x_recon = self.vqvae.decode(self.zq_voxels)
 
     def inference(self, data, should_render=False, verbose=False):

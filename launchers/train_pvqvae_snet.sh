@@ -2,9 +2,9 @@
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-gpuid=1
+gpuid=0
 lr=1e-4
-batch_size=6
+batch_size=1
 max_dataset_size=10000000
 dataset_mode='snet'
 cat='all'

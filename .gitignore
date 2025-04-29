@@ -5,6 +5,9 @@ test-results/
 demo_data/
 tmp/
 preprocess/isosurface/
+data/
+checkpoints/
+logs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -3,11 +3,12 @@ import argparse
 
 from termcolor import colored
 from omegaconf import OmegaConf
-
+import sys
 import torch
 from torch.utils.tensorboard import SummaryWriter
-
-import AutoSDF.utils
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from AutoSDF import utils
+#import AutoSDF.utils
 
 class BaseOptions():
     def __init__(self):
@@ -17,7 +18,7 @@ class BaseOptions():
     def initialize(self):
         # hyper parameters
         self.parser.add_argument('--batch_size', type=int, default=1, help='input batch size')
-        self.parser.add_argument('--gpu_ids', type=str, default='1', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
+        self.parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
 
         # log stuff
         self.parser.add_argument('--logs_dir', type=str, default='./logs', help='models are saved here')
@@ -148,6 +149,7 @@ class BaseOptions():
 
         # set gpu ids
         if len(self.opt.gpu_ids) > 0:
+            print(self.opt.gpu_ids[0])
             torch.cuda.set_device(self.opt.gpu_ids[0])
             
         args = vars(self.opt)
@@ -161,7 +163,7 @@ class BaseOptions():
         if self.opt.isTrain:
             expr_dir = os.path.join(self.opt.logs_dir, self.opt.name)
 
-            AutoSDF.utils.util.mkdirs(expr_dir)
+            utils.util.mkdirs(expr_dir)
             file_name = os.path.join(expr_dir, 'opt.txt')
             with open(file_name, 'wt') as opt_file:
                 opt_file.write('------------ Options -------------\n')

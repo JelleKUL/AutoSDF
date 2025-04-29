@@ -1,6 +1,8 @@
 import os
 import time
 import inspect
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from termcolor import colored, cprint
 from tqdm import tqdm

@@ -19,7 +19,7 @@ elif hostname == 'euclid':
         dataroot = '/data/yenchi/generative_transformers/data'
         logroot = '/data/yenchi/generative_transformers/logs'
 else:
-    dataroot = '/data'
+    dataroot = './data'
     logroot = '/logs'
 
 print(username)

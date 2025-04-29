@@ -36,7 +36,7 @@ class ShapeNetDataset(BaseDataset):
     def initialize(self, opt, phase='train', cat='all'):
         self.opt = opt
         self.max_dataset_size = opt.max_dataset_size
-
+        print(f'{dataroot}/ShapeNet/info.json')
         with open(f'{dataroot}/ShapeNet/info.json') as f:
             self.info = json.load(f)
         # with open(f'{dataroot}/ShapeNet/all.csv', 'r') as f:
@@ -62,7 +62,7 @@ class ShapeNetDataset(BaseDataset):
                 for l in f.readlines():
                     model_id = l.rstrip('\n')
                     
-                    path = f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
+                    path = f'{dataroot}/../../Data/Pre-processed_data/windows-preprocessed/{synset}/{model_id}/sdf.pt'# f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
                     model_list_s.append(path)
                 
                 self.model_list += model_list_s
@@ -88,13 +88,23 @@ class ShapeNetDataset(BaseDataset):
         # model_id = self.model_list[index]
         synset = self.cats_list[index]
         # sdf_h5_file = osp.join(self._data_dir, 'SDF_v1', synset, model_id, 'ori_sample_grid.h5')
-        sdf_h5_file = self.model_list[index]
+        sdf_file = self.model_list[index]
         
-        h5_f = h5py.File(sdf_h5_file, 'r')
-        sdf = h5_f['pc_sdf_sample'][:].astype(np.float32)
-        sdf = torch.Tensor(sdf).view(1, 64, 64, 64)
-        # print(sdf.shape)
-        # sdf = sdf[:, :64, :64, :64]
+        #h5_f = h5py.File(sdf_h5_file, 'r')
+        #sdf = h5_f['pc_sdf_sample'][:].astype(np.float32)
+        #sdf = torch.Tensor(sdf).view(1, 64, 64, 64)
+        sdf = torch.load(sdf_file)
+        #print(sdf.device)
+        if sdf.ndim == 3:
+            sdf = sdf.unsqueeze(0)
+        elif sdf.ndim == 5:
+            sdf = sdf.squeeze(0)
+
+        thres = self.opt.trunc_thres
+        if thres != 0.0:
+            sdf = torch.clamp(sdf, min=-thres, max=thres)
+        #print(sdf.shape)
+        sdf = sdf[:, :64, :64, :64]
 
         thres = self.opt.trunc_thres
         if thres != 0.0:
@@ -104,7 +114,7 @@ class ShapeNetDataset(BaseDataset):
             'sdf': sdf,
             'cat_id': synset,
             'cat_str': self.id_to_cat[synset],
-            'path': sdf_h5_file,
+            'path': sdf_file,
             # 'tsdf': tsdf,
         }
 
