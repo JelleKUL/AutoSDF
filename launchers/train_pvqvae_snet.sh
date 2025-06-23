@@ -2,7 +2,7 @@
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-gpuid=0
+gpuid=1
 lr=1e-4
 batch_size=1
 max_dataset_size=10000000
@@ -11,8 +11,8 @@ cat='all'
 # cat='chair'
 trunc_thres=0.2
 
-nepochs=200
-nepochs_decay=200
+nepochs=300
+nepochs_decay=300
 
 # model stuff
 model='pvqvae'

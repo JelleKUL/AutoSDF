@@ -1,6 +1,7 @@
 import os
 from termcolor import colored, cprint
 import torch
+import AutoSDF.models as models
 import AutoSDF.utils.util as util
 
 

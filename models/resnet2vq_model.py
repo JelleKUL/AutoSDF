@@ -20,7 +20,7 @@ from AutoSDF.models.base_model import BaseModel
 from AutoSDF.models.networks.resnet2vq_net import ResNet2VQ
 from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
 
-import AutoSDF.utils
+import AutoSDF.utils.util as util
 from AutoSDF.utils.util_3d import init_mesh_renderer, render_mesh, render_sdf
 
 class ResNet2VQModel(BaseModel):

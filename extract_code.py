@@ -149,9 +149,11 @@ for phase in ['train', 'test']:
                     code_entry_out = f'{model_dir}/codeix{obj_name_noext}.npy'
                     x_out = f'{model_dir}/x{obj_name_noext}.npy'
             else:
-                synset_id, model_id, _ = path.split('/')[-3:]
+                print(path)
+                synset_id,sub_id, model_id, _ = path.split('/')[-4:]
 
-                model_dir = f'{code_output_dir}/{synset_id}/{model_id}'
+                model_dir = f'{code_output_dir}/{synset_id}/{sub_id}/{model_id}'
+                print(model_dir)
                 if not os.path.exists(model_dir):
                     os.makedirs(model_dir)
                     

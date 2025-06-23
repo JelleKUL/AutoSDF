@@ -21,7 +21,7 @@ from AutoSDF.models.base_model import BaseModel
 from AutoSDF.models.networks.pvqvae_networks.auto_encoder import PVQVAE
 from AutoSDF.models.networks.losses import VQLoss
 
-import AutoSDF.utils.util
+import AutoSDF.utils.util as util
 from AutoSDF.utils.util_3d import init_mesh_renderer, render_sdf
 
 class PVQVAEModel(BaseModel):
@@ -113,7 +113,7 @@ class PVQVAEModel(BaseModel):
         '''Samples at training time'''
         # import pdb; pdb.set_trace()
         x = input['sdf']
-        print("input SDF device: ", x.device)
+        #print("input SDF device: ", x.device)
         self.x = x#.to(self.opt.device)
         self.cur_bs = x.shape[0] # to handle last batch
 
@@ -126,7 +126,7 @@ class PVQVAEModel(BaseModel):
         # qloss: codebook loss
         self.zq_cubes, self.qloss, _ = self.vqvae.encode(self.x_cubes) # zq_cubes: ncubes X zdim X 1 X 1 X 1
         self.zq_voxels = self.fold_to_voxels(self.zq_cubes, batch_size=self.cur_bs, ncubes_per_dim=self.ncubes_per_dim) # zq_voxels: bs X zdim X ncubes_per_dim X ncubes_per_dim X ncubes_per_dim
-        print("zq_voxels device: ",self.zq_voxels.device)
+        #print("zq_voxels device: ",self.zq_voxels.device)
         #print(next(self.decoder.parameters()).device)
         self.x_recon = self.vqvae.decode(self.zq_voxels)
 
@@ -161,7 +161,7 @@ class PVQVAEModel(BaseModel):
         x = self.x
         x_recon = self.x_recon
 
-        iou = utils.util.iou(x, x_recon, thres)
+        iou = util.iou(x, x_recon, thres)
 
         return iou
 

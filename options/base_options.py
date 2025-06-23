@@ -7,6 +7,7 @@ import sys
 import torch
 from torch.utils.tensorboard import SummaryWriter
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from AutoSDF import utils
 #import AutoSDF.utils
 

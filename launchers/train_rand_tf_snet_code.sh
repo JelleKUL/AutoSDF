@@ -20,7 +20,7 @@ vq_dset='snet'
 vq_cat='all'
 
 # dataset stuff
-batch_size=16
+batch_size=8
 max_dataset_size=10000000
 dataset_mode='snet_code'
 trunc_thres=0.2

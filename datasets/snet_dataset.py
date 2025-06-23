@@ -36,7 +36,7 @@ class ShapeNetDataset(BaseDataset):
     def initialize(self, opt, phase='train', cat='all'):
         self.opt = opt
         self.max_dataset_size = opt.max_dataset_size
-        print(f'{dataroot}/ShapeNet/info.json')
+        #print(f'{dataroot}/ShapeNet/info.json')
         with open(f'{dataroot}/ShapeNet/info.json') as f:
             self.info = json.load(f)
         # with open(f'{dataroot}/ShapeNet/all.csv', 'r') as f:
@@ -62,7 +62,9 @@ class ShapeNetDataset(BaseDataset):
                 for l in f.readlines():
                     model_id = l.rstrip('\n')
                     
-                    path = f'{dataroot}/../../Data/Pre-processed_data/windows-preprocessed/{synset}/{model_id}/sdf.pt'# f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
+                    #path = f'{dataroot}/../../Data/Pre-processed_data/windows-preprocessed/{synset}/{model_id}/sdf.pt'# f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
+                    #path = f'{dataroot}/../../../datasets/BuizenSDF/{synset}/{model_id}/sdf.pt'# f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
+                    path = f'{dataroot}/../../../datasets/BuizenSDF/{model_id}/sdf.pt'# f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
                     model_list_s.append(path)
                 
                 self.model_list += model_list_s
@@ -164,7 +166,9 @@ class ShapeNetCodeDataset(BaseDataset):
                     model_id = l.rstrip('\n')
                     
                     # path = f'{dataroot}/ShapeNet/SDF_v1_64/{synset}/{model_id}/ori_sample_grid.h5'
-                    path = f'{self.code_dir}/{synset}/{model_id}'
+                    path = f'{self.code_dir}/{model_id}'
+                    #path = f'{self.code_dir}/{synset}/{model_id}'
+
                     model_list_s.append(path)
 
                     # if os.path.exists(path):
